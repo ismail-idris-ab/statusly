@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens (Doc 04 — UI/UX Brief).
+ * Stored as space-separated RGB channels so Tailwind can apply <alpha-value>.
+ * Semantic tokens (bg/surface/text/...) swap under `.dark`; brand tokens
+ * (primary/accent/...) stay constant across themes.
+ */
+@layer base {
+  :root {
+    --color-primary: 14 143 110;
+    --color-primary-dark: 10 110 85;
+    --color-primary-light: 20 184 140;
+    --color-accent: 37 208 122;
+    --color-accent-glow: 61 227 139;
+    --color-on-primary: 255 255 255;
+    --color-danger: 229 72 77;
+
+    --color-bg: 255 255 255;
+    --color-surface: 244 247 245;
+    --color-surface-alt: 233 242 236;
+    --color-text: 15 26 22;
+    --color-text-muted: 91 107 100;
+    --color-border: 221 230 225;
+  }
+
+  .dark:root,
+  .dark {
+    --color-bg: 11 20 17;
+    --color-surface: 19 32 27;
+    --color-surface-alt: 27 44 36;
+    --color-text: 234 243 238;
+    --color-text-muted: 157 176 168;
+    --color-border: 36 53 45;
+  }
+}
