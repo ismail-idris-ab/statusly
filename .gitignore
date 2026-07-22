@@ -42,3 +42,4 @@ google-play-service-account.json
 modules/*/android/build/
 modules/*/android/.cxx/
 modules/*/android/.gradle/
+*.apk
