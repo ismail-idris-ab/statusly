@@ -9,7 +9,7 @@ import {
   type LucideIcon,
 } from 'lucide-react-native';
 import { useEffect, useState } from 'react';
-import { BackHandler, Pressable, Text, View } from 'react-native';
+import { BackHandler, Pressable, Share, Text, View } from 'react-native';
 
 import { FilterTabs } from '@/components/FilterTabs';
 import { MediaGrid } from '@/components/MediaGrid';
@@ -153,6 +153,14 @@ export function StatusFeed({
     }
   };
 
+  const shareApp = () => {
+    void Share.share({
+      message:
+        'Statusly — save & repost WhatsApp statuses in HD. ' +
+        'https://play.google.com/store/apps/details?id=com.statusly.app',
+    });
+  };
+
   const gridItems = items.map((i) => ({
     key: i.uri,
     uri: i.uri,
@@ -181,10 +189,18 @@ export function StatusFeed({
             <Text className="text-2xl font-bold text-text">{title}</Text>
             <View className="flex-row">
               <Pressable
+                onPress={shareApp}
+                accessibilityRole="button"
+                accessibilityLabel="Share app"
+                className="h-10 w-10 items-center justify-center rounded-full bg-surface"
+              >
+                <Share2 color={palette.primary} size={22} />
+              </Pressable>
+              <Pressable
                 onPress={() => router.push('/direct-chat')}
                 accessibilityRole="button"
                 accessibilityLabel="Direct chat"
-                className="h-10 w-10 items-center justify-center rounded-full bg-surface"
+                className="ml-2 h-10 w-10 items-center justify-center rounded-full bg-surface"
               >
                 <MessageCircle color={palette.primary} size={22} />
               </Pressable>

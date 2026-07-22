@@ -158,34 +158,63 @@ class StatusAccessModule : Module() {
   private fun listStatuses(source: String): List<Map<String, Any?>> {
     val stored = getStoredTreeUri(source)
       ?: throw CodedException("No folder access granted for source: $source")
-    val uri = Uri.parse(stored)
-    val dir = DocumentFile.fromTreeUri(context, uri)
-      ?: throw CodedException("Status folder is not accessible")
-    if (!dir.canRead()) {
+    val treeUri = Uri.parse(stored)
+
+    // Cheap revocation check (no per-file query).
+    val stillGranted = context.contentResolver.persistedUriPermissions.any {
+      it.uri == treeUri && it.isReadPermission
+    }
+    if (!stillGranted) {
       throw CodedException("Read permission for the status folder was revoked")
     }
 
-    return dir.listFiles()
-      .asSequence()
-      .filter { it.isFile }
-      .mapNotNull { file ->
-        val mime = file.type ?: return@mapNotNull null
-        val kind = when {
-          mime.startsWith("image/") -> "image"
-          mime.startsWith("video/") -> "video"
-          else -> return@mapNotNull null
+    // ONE bulk query for all children with every column we need — instead of
+    // DocumentFile.listFiles() + a ContentResolver round-trip per file per
+    // field (type/size/date), which is very slow for a full .Statuses folder.
+    val treeDocId = DocumentsContract.getTreeDocumentId(treeUri)
+    val childrenUri =
+      DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, treeDocId)
+    val projection = arrayOf(
+      DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+      DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+      DocumentsContract.Document.COLUMN_MIME_TYPE,
+      DocumentsContract.Document.COLUMN_SIZE,
+      DocumentsContract.Document.COLUMN_LAST_MODIFIED,
+    )
+
+    val results = ArrayList<Map<String, Any?>>()
+    context.contentResolver
+      .query(childrenUri, projection, null, null, null)
+      ?.use { cursor ->
+        val idCol = cursor.getColumnIndexOrThrow(projection[0])
+        val nameCol = cursor.getColumnIndexOrThrow(projection[1])
+        val mimeCol = cursor.getColumnIndexOrThrow(projection[2])
+        val sizeCol = cursor.getColumnIndexOrThrow(projection[3])
+        val modCol = cursor.getColumnIndexOrThrow(projection[4])
+        while (cursor.moveToNext()) {
+          val mime = cursor.getString(mimeCol) ?: continue
+          val kind = when {
+            mime.startsWith("image/") -> "image"
+            mime.startsWith("video/") -> "video"
+            else -> continue
+          }
+          val docId = cursor.getString(idCol) ?: continue
+          val fileUri =
+            DocumentsContract.buildDocumentUriUsingTree(treeUri, docId)
+          results.add(
+            mapOf(
+              "uri" to fileUri.toString(),
+              "name" to (cursor.getString(nameCol) ?: ""),
+              "mime" to mime,
+              "sizeBytes" to cursor.getLong(sizeCol),
+              "lastModified" to cursor.getLong(modCol),
+              "type" to kind,
+            ),
+          )
         }
-        mapOf(
-          "uri" to file.uri.toString(),
-          "name" to (file.name ?: ""),
-          "mime" to mime,
-          "sizeBytes" to file.length(),
-          "lastModified" to file.lastModified(),
-          "type" to kind,
-        )
       }
-      .sortedByDescending { it["lastModified"] as Long }
-      .toList()
+    results.sortByDescending { it["lastModified"] as Long }
+    return results
   }
 
   // -- Caching for share / repost -------------------------------------------
