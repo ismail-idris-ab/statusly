@@ -34,7 +34,7 @@ import { useSettingsStore, type ThemePref } from '@/store/useSettingsStore';
 
 // TODO(store): replace with the real "Follow us" URL before submission.
 const FOLLOW_URL = 'https://www.instagram.com/';
-const FEEDBACK_EMAIL = 'ismailidris285@gmail.com';
+const FEEDBACK_EMAIL = 'aiimern001@gmail.com';
 
 function LinkRow({
   icon: Icon,
