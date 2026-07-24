@@ -7,6 +7,7 @@ import {
   NativeSyntheticEvent,
   PermissionsAndroid,
   Platform,
+  Pressable,
   ScrollView,
   Text,
   useWindowDimensions,
@@ -188,6 +189,28 @@ export default function OnboardingScreen() {
         <Text className="mt-3 text-center text-xs text-text-muted">
           Your media stays on your device. No account needed.
         </Text>
+
+        <View className="mt-2 flex-row items-center justify-center">
+          <Pressable
+            onPress={() => router.push('/legal/terms')}
+            accessibilityRole="link"
+            hitSlop={8}
+          >
+            <Text className="text-xs font-semibold text-primary">
+              Terms of Service
+            </Text>
+          </Pressable>
+          <Text className="mx-2 text-xs text-text-muted">·</Text>
+          <Pressable
+            onPress={() => router.push('/legal/privacy')}
+            accessibilityRole="link"
+            hitSlop={8}
+          >
+            <Text className="text-xs font-semibold text-primary">
+              Privacy Policy
+            </Text>
+          </Pressable>
+        </View>
       </View>
     </Screen>
   );

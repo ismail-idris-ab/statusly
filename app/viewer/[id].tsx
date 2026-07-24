@@ -1,4 +1,3 @@
-import { Image } from 'expo-image';
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { X } from 'lucide-react-native';
@@ -13,6 +12,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActionTrio } from '@/components/ActionTrio';
+import { ZoomableImage } from '@/components/ZoomableImage';
 import { repostStatus, saveStatus, shareStatus } from '@/lib/mediaActions';
 import type { StatusFile } from '@/native/StatusAccessModule';
 import { useStatusStore } from '@/store/useStatusStore';
@@ -54,18 +54,24 @@ function VideoPage({
 
 function ImagePage({
   item,
+  active,
   width,
   height,
+  onZoomChange,
 }: {
   item: StatusFile;
+  active: boolean;
   width: number;
   height: number;
+  onZoomChange: (zoomed: boolean) => void;
 }) {
   return (
-    <Image
-      source={{ uri: item.uri }}
-      style={{ width, height }}
-      contentFit="contain"
+    <ZoomableImage
+      uri={item.uri}
+      width={width}
+      height={height}
+      active={active}
+      onZoomChange={onZoomChange}
     />
   );
 }
@@ -90,6 +96,9 @@ export default function ViewerScreen() {
   // desynced the shown page from `current` and saved the wrong item).
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [focused, setFocused] = useState(true);
+  // Lock horizontal paging while an image is zoomed in, so panning the zoomed
+  // image doesn't flip to the next status.
+  const [zoomed, setZoomed] = useState(false);
 
   // Pause videos when the screen is not focused (e.g. another viewer is pushed
   // on top, or we navigate back to the grid).
@@ -149,6 +158,7 @@ export default function ViewerScreen() {
             ref={listRef}
             data={items}
             horizontal
+            scrollEnabled={!zoomed}
             keyExtractor={(item) => item.uri}
             showsHorizontalScrollIndicator={false}
             snapToInterval={size.width}
@@ -179,7 +189,13 @@ export default function ViewerScreen() {
                   height={size.height}
                 />
               ) : (
-                <ImagePage item={item} width={size.width} height={size.height} />
+                <ImagePage
+                  item={item}
+                  active={index === current && focused}
+                  width={size.width}
+                  height={size.height}
+                  onZoomChange={setZoomed}
+                />
               )
             }
           />
