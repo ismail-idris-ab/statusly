@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   listStatuses,
@@ -57,7 +57,10 @@ export function useStatuses(
     void load(false);
   }, [load]);
 
-  const items = all.filter((f) => f.type === filter);
+  const items = useMemo(
+    () => all.filter((f) => f.type === filter),
+    [all, filter],
+  );
 
   return {
     phase,

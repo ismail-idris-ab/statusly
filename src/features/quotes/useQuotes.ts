@@ -44,11 +44,21 @@ export function useQuotes(filter: QuoteFilter): UseQuotes {
 
   const toggleFavorite = useCallback(
     async (quote: Quote) => {
+      const next = !quote.isFavorite;
+      // Optimistic: flip in place instead of re-querying categories + the whole
+      // list on every heart tap. In the Favorites view, unfavoriting removes it.
+      setQuotes((prev) => {
+        const updated = prev.map((q) =>
+          q.id === quote.id ? { ...q, isFavorite: next } : q,
+        );
+        return filter === FAVORITES && !next
+          ? updated.filter((q) => q.isFavorite)
+          : updated;
+      });
       const db = await getDatabase();
-      await setQuoteFavorite(db, quote.id, !quote.isFavorite);
-      await load();
+      await setQuoteFavorite(db, quote.id, next);
     },
-    [load],
+    [filter],
   );
 
   return { categories, quotes, loading, toggleFavorite };

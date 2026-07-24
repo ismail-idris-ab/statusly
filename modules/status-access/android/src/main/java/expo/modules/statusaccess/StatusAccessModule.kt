@@ -64,6 +64,10 @@ class StatusAccessModule : Module() {
       shareMultiple(paths, mime)
     }
 
+    AsyncFunction("clearStatusCache") {
+      clearStatusCache()
+    }
+
     OnActivityResult { _, payload ->
       if (payload.requestCode != OPEN_TREE_REQUEST) {
         return@OnActivityResult
@@ -232,6 +236,18 @@ class StatusAccessModule : Module() {
       out.outputStream().use { output -> input.copyTo(output) }
     }
     return Uri.fromFile(out).toString()
+  }
+
+  /**
+   * Deletes files copied into the share/save cache (`cacheDir/statuses`). Called
+   * on app start so the cache — which grows by one full media copy per
+   * save/share/repost/viewer-open — never accumulates unbounded.
+   */
+  private fun clearStatusCache() {
+    val dir = File(context.cacheDir, "statuses")
+    if (dir.isDirectory) {
+      dir.listFiles()?.forEach { it.delete() }
+    }
   }
 
   private fun queryDisplayName(uri: Uri): String? {

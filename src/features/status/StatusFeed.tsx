@@ -8,7 +8,7 @@ import {
   Share2,
   type LucideIcon,
 } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BackHandler, Pressable, Share, Text, View } from 'react-native';
 
 import { FilterTabs } from '@/components/FilterTabs';
@@ -99,7 +99,7 @@ export function StatusFeed({
   }, [select]);
 
   const openViewer = (index: number) => {
-    setStoreItems(items);
+    setStoreItems(items, source);
     maybeShowInterstitial();
     router.push(`/viewer/${index}`);
   };
@@ -128,7 +128,7 @@ export function StatusFeed({
     if (!item) {
       return;
     }
-    if (await saveStatus(item)) {
+    if (await saveStatus(item, source)) {
       setSavedKeys((prev) => new Set(prev).add(item.uri));
     }
   };
@@ -136,7 +136,7 @@ export function StatusFeed({
   const onBatchSave = async () => {
     const chosen = items.filter((i) => select.selected.has(i.uri));
     select.clear();
-    await saveMany(chosen);
+    await saveMany(chosen, source);
   };
 
   const onBatchShare = async () => {
@@ -161,11 +161,10 @@ export function StatusFeed({
     });
   };
 
-  const gridItems = items.map((i) => ({
-    key: i.uri,
-    uri: i.uri,
-    type: i.type,
-  }));
+  const gridItems = useMemo(
+    () => items.map((i) => ({ key: i.uri, uri: i.uri, type: i.type })),
+    [items],
+  );
 
   return (
     <Screen>

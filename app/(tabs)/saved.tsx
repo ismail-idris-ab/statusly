@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { BookmarkX, Share2, Trash2 } from 'lucide-react-native';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BackHandler, Pressable, Text, View } from 'react-native';
 
 import { FilterTabs, type MediaFilter } from '@/components/FilterTabs';
@@ -85,11 +85,10 @@ export default function SavedScreen() {
     await remove(ids);
   };
 
-  const gridItems = items.map((i) => ({
-    key: i.id,
-    uri: i.localUri,
-    type: i.type,
-  }));
+  const gridItems = useMemo(
+    () => items.map((i) => ({ key: i.id, uri: i.localUri, type: i.type })),
+    [items],
+  );
 
   return (
     <Screen>

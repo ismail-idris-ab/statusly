@@ -75,6 +75,7 @@ export default function ViewerScreen() {
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
   const items = useStatusStore((s) => s.items);
+  const source = useStatusStore((s) => s.source);
   const listRef = useRef<FlatList<StatusFile>>(null);
 
   const initial = Math.min(
@@ -201,7 +202,7 @@ export default function ViewerScreen() {
       >
         <ActionTrio
           busy={busy}
-          onSave={run(saveStatus)}
+          onSave={run((s) => saveStatus(s, source))}
           onShare={run(shareStatus)}
           onRepost={run(repostStatus)}
         />

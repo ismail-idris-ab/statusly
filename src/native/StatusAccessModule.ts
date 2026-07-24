@@ -34,6 +34,7 @@ type NativeStatusAccess = {
   listStatuses(source: StatusSource): Promise<unknown>;
   cacheStatus(uri: string): Promise<string>;
   shareMultiple(paths: string[], mime: string): Promise<void>;
+  clearStatusCache(): Promise<void>;
 };
 
 // Throws if the native module is missing (e.g. before a dev rebuild). Only
@@ -93,4 +94,9 @@ export async function shareMultiple(
   mime: string,
 ): Promise<void> {
   return native.shareMultiple(paths, mime);
+}
+
+/** Empties the share/save cache dir so cached copies never accumulate. */
+export async function clearStatusCache(): Promise<void> {
+  return native.clearStatusCache();
 }

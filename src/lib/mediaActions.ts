@@ -10,6 +10,7 @@ import {
   cacheStatus,
   shareMultiple,
   type StatusFile,
+  type StatusSource,
 } from '@/native/StatusAccessModule';
 import { prefs } from '@/lib/preferences';
 
@@ -31,7 +32,10 @@ async function requestGalleryPermission(): Promise<boolean> {
  * `saved_items`. No permission prompt or toast — callers handle those so a
  * batch save asks once and reports once.
  */
-async function persistToGallery(status: StatusFile): Promise<boolean> {
+async function persistToGallery(
+  status: StatusFile,
+  source: StatusSource,
+): Promise<boolean> {
   try {
     // MediaLibrary needs a file:// path; the native module copies the SAF
     // content:// bytes into app cache unchanged (original quality).
@@ -46,7 +50,7 @@ async function persistToGallery(status: StatusFile): Promise<boolean> {
     const db = await getDatabase();
     await insertSavedItem(db, {
       type: status.type,
-      source: 'whatsapp',
+      source,
       localUri: asset.uri,
       originName: status.name,
       sizeBytes: status.sizeBytes,
@@ -60,18 +64,24 @@ async function persistToGallery(status: StatusFile): Promise<boolean> {
 }
 
 /** Saves one status to the gallery (action-trio Save). */
-export async function saveStatus(status: StatusFile): Promise<boolean> {
+export async function saveStatus(
+  status: StatusFile,
+  source: StatusSource = 'whatsapp',
+): Promise<boolean> {
   if (!(await requestGalleryPermission())) {
     toast('Gallery permission needed to save');
     return false;
   }
-  const ok = await persistToGallery(status);
+  const ok = await persistToGallery(status, source);
   toast(ok ? 'Saved to gallery' : "Couldn't save this status");
   return ok;
 }
 
 /** Batch-saves many statuses, asking permission once and reporting once. */
-export async function saveMany(statuses: StatusFile[]): Promise<number> {
+export async function saveMany(
+  statuses: StatusFile[],
+  source: StatusSource = 'whatsapp',
+): Promise<number> {
   if (statuses.length === 0) {
     return 0;
   }
@@ -81,7 +91,7 @@ export async function saveMany(statuses: StatusFile[]): Promise<number> {
   }
   let saved = 0;
   for (const status of statuses) {
-    if (await persistToGallery(status)) {
+    if (await persistToGallery(status, source)) {
       saved += 1;
     }
   }
@@ -91,8 +101,15 @@ export async function saveMany(statuses: StatusFile[]): Promise<number> {
 
 /** Opens the Android share sheet for a status (Share action). */
 export async function shareStatus(status: StatusFile): Promise<void> {
+  // Cache first: a failure here is a real IO error the user should hear about.
+  let filePath: string;
   try {
-    const filePath = await cacheStatus(status.uri);
+    filePath = await cacheStatus(status.uri);
+  } catch {
+    toast("Couldn't share this status");
+    return;
+  }
+  try {
     if (!(await Sharing.isAvailableAsync())) {
       toast('Sharing is not available');
       return;
@@ -134,8 +151,14 @@ export async function shareMany(statuses: StatusFile[]): Promise<void> {
  * the cached file; the user picks WhatsApp → "My status" (Doc 02).
  */
 export async function repostStatus(status: StatusFile): Promise<void> {
+  let filePath: string;
   try {
-    const filePath = await cacheStatus(status.uri);
+    filePath = await cacheStatus(status.uri);
+  } catch {
+    toast("Couldn't repost this status");
+    return;
+  }
+  try {
     if (!(await Sharing.isAvailableAsync())) {
       toast('Sharing is not available');
       return;

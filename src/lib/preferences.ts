@@ -24,7 +24,6 @@ export const KEYS = {
   alertsIntervalMin: 'alerts.intervalMin',
   onboardingComplete: 'onboarding.complete',
   theme: 'theme',
-  adsLastInterstitialAt: 'ads.lastInterstitialAt',
   statsSavedCount: 'stats.savedCount',
 } as const;
 
@@ -97,14 +96,6 @@ export const prefs = {
   },
   setTheme(value: ThemePref): void {
     setString(KEYS.theme, value);
-  },
-
-  // Ad frequency cap -----------------------------------------------------
-  getLastInterstitialAt(): number {
-    return getNumber(KEYS.adsLastInterstitialAt, 0);
-  },
-  setLastInterstitialAt(epochMs: number): void {
-    setNumber(KEYS.adsLastInterstitialAt, epochMs);
   },
 
   // Stats ----------------------------------------------------------------

@@ -38,6 +38,12 @@ export default function RootLayout() {
     initAds().catch((error: unknown) => {
       Sentry.captureException(error);
     });
+    // Empty the share/save cache so per-action file copies never accumulate.
+    // Dynamic import keeps the native module out of the startup import graph;
+    // the catch tolerates an older dev build without this method.
+    void import('@/native/StatusAccessModule')
+      .then((m) => m.clearStatusCache())
+      .catch(() => undefined);
   }, []);
 
   useEffect(() => {
