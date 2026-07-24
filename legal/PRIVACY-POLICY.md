@@ -1,11 +1,7 @@
 # Privacy Policy — Statusly
 
-**Last updated: 20 July 2026**
-**Effective date: [PUBLISH DATE]**
-
-> **⚠️ Before you publish:** fill in every `[BRACKETED]` placeholder, host this at a public URL, and verify that every statement below matches what your final build actually does. A privacy policy that contradicts your Data Safety form is one of the most common reasons apps get rejected or removed. See `PLAY-COMPLIANCE.md`.
->
-> **This is not legal advice.** It is a carefully researched template written specifically for this app's architecture. Have a qualified lawyer review it before publishing, especially as your app grows or you add features.
+**Last updated: 24 July 2026**
+**Effective date: 24 July 2026**
 
 ---
 
@@ -14,8 +10,8 @@
 Statusly ("**the App**", "**we**", "**us**", "**our**") is an Android application developed and published by **Ismail Idris**, an individual developer based in Nigeria ("**the Developer**").
 
 - **App package name:** `com.statusly.app`
-- **Privacy contact:** [ismailidris285@gmail.com — *recommend replacing with a dedicated address, e.g. privacy@yourdomain.com*]
-- **Postal address:** [YOUR ADDRESS — required by Google for developer verification]
+- **Privacy contact:** aiimern001@gmail.com
+- **Postal address:** 47 Ogui Road, Room 814, Second Floor (by Owerre Road Bus Stop), Enugu State, Nigeria
 
 This policy explains what happens to information when you use Statusly. It applies only to the Statusly Android app and not to any other service.
 
@@ -105,10 +101,9 @@ We ask for the minimum needed. You can refuse or revoke any of these in your dev
 | **Run at startup** (`RECEIVE_BOOT_COMPLETED`) | To restart the background alert check after your phone reboots | Alerts stop working after a reboot |
 | **Internet / network state** | Only to load advertisements and send crash reports | Ads fail to load; the App otherwise works offline |
 | **Advertising ID** (`AD_ID`) | Used by AdMob to serve and measure ads | Ads become non-personalised |
+| **Photo & video access** (`READ_MEDIA_IMAGES`, `READ_MEDIA_VIDEO`) | To save statuses into your device gallery and to display the items in your "Saved" library | You cannot save statuses to your gallery |
 
 **We do not request access to your contacts, your location, your camera, your microphone, your call logs, or your SMS messages.**
-
-[**If your final build requests `READ_MEDIA_IMAGES` / `READ_MEDIA_VIDEO`, you MUST add a row here describing it. See `PLAY-COMPLIANCE.md` — we strongly recommend architecting to avoid these permissions entirely.**]
 
 ## 7. How information is used
 
@@ -211,8 +206,8 @@ We may update this policy as the App changes or the law changes. When we do, we 
 Questions, requests, or complaints about privacy:
 
 **Ismail Idris**
-Email: [ismailidris285@gmail.com]
-Address: [YOUR ADDRESS]
+Email: aiimern001@gmail.com
+Address: 47 Ogui Road, Room 814, Second Floor (by Owerre Road Bus Stop), Enugu State, Nigeria
 
 If you are in Nigeria and are unsatisfied with our response, you may contact the **Nigeria Data Protection Commission**. If you are in the EEA or UK, you may contact your local data protection authority.
 

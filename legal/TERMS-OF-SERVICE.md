@@ -1,11 +1,7 @@
 # Terms of Service — Statusly
 
-**Last updated: 20 July 2026**
-**Effective date: [PUBLISH DATE]**
-
-> **⚠️ Before you publish:** fill in every `[BRACKETED]` placeholder and host this at a public URL.
->
-> **This is not legal advice.** It is a carefully researched template written for this app's specific architecture and risk profile. Have a qualified lawyer review it before publishing.
+**Last updated: 24 July 2026**
+**Effective date: 24 July 2026**
 
 ---
 
@@ -15,7 +11,7 @@ These Terms of Service ("**Terms**") are a binding agreement between you ("**you
 
 **By downloading, installing, or using the App, you agree to these Terms.** If you do not agree, do not install or use the App, and uninstall it if you already have.
 
-Your use of the App is also governed by our [Privacy Policy]([PRIVACY POLICY URL]), which is incorporated into these Terms by reference, and by the **Google Play Terms of Service**.
+Your use of the App is also governed by our [Privacy Policy](https://ismail-idris-ab.github.io/statusly/legal/site/privacy-policy.html), which is incorporated into these Terms by reference, and by the **Google Play Terms of Service**.
 
 ## 2. IMPORTANT — no affiliation with WhatsApp or Meta
 
@@ -165,8 +161,8 @@ We may update these Terms from time to time. When we do, we will update the "Las
 ## 19. Contact
 
 **Ismail Idris**
-Email: [ismailidris285@gmail.com]
-Address: [YOUR ADDRESS]
+Email: aiimern001@gmail.com
+Address: 47 Ogui Road, Room 814, Second Floor (by Owerre Road Bus Stop), Enugu State, Nigeria
 
 ---
 
