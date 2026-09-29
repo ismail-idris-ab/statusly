@@ -12,6 +12,7 @@ type Extra = {
     interstitialUnitId: string;
     appOpenUnitId: string;
     nativeUnitId: string;
+    testDeviceIds: string[];
   };
   iap: { removeAdsSku: string };
   sentryDsn: string;
@@ -24,6 +25,7 @@ const fallback: Extra = {
     interstitialUnitId: '',
     appOpenUnitId: '',
     nativeUnitId: '',
+    testDeviceIds: [],
   },
   iap: { removeAdsSku: 'remove_ads' },
   sentryDsn: '',

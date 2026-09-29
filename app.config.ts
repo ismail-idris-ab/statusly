@@ -91,6 +91,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       interstitialUnitId: process.env.ADMOB_INTERSTITIAL_UNIT_ID ?? '',
       appOpenUnitId: process.env.ADMOB_APPOPEN_UNIT_ID ?? '',
       nativeUnitId: process.env.ADMOB_NATIVE_UNIT_ID ?? '',
+      // Hashed device ids (from the SDK's "setTestDeviceIds" logcat line) that
+      // always get test ads, even when the AdMob console registration lags.
+      testDeviceIds: (process.env.ADMOB_TEST_DEVICE_IDS ?? '')
+        .split(',')
+        .map((id) => id.trim())
+        .filter((id) => id.length > 0),
     },
     iap: {
       removeAdsSku: process.env.IAP_REMOVE_ADS_SKU ?? 'remove_ads',

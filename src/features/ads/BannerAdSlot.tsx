@@ -5,6 +5,7 @@ import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 import { useEntitlements } from '@/store/useEntitlements';
 
 import { adUnitIds } from './adUnits';
+import { reportAdError } from './reportAdError';
 
 /**
  * Anchored adaptive banner, hidden entirely once ads are removed. If the ad
@@ -24,7 +25,10 @@ export function BannerAdSlot() {
       <BannerAd
         unitId={adUnitIds.banner}
         size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-        onAdFailedToLoad={() => setFailed(true)}
+        onAdFailedToLoad={(error) => {
+          reportAdError('banner', error);
+          setFailed(true);
+        }}
       />
     </View>
   );
