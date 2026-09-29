@@ -53,6 +53,65 @@ eas submit -p android --profile production      # uploads to the internal track 
 
 ## 3. Store listing copy
 
+Current listing (Play Console → Grow users → Store presence → Main store listing). Only the **Play Store title** changed — the in-app / launcher name stays `Statusly` (`app.config.ts`).
+
+- **App name (30 chars max):** `Status Saver-Status Downloader` (30 chars — the spaced form `Status saver - Status downloader` is 32 and won't save)
+- **Short description (80 chars max):**
+  `Status saver & downloader: save photos & videos in HD. Share or repost in 1 tap` (79 chars)
+- **Full description:**
+
+```
+Statusly is an independent app and is not affiliated with, endorsed by, or sponsored by WhatsApp LLC or Meta Platforms, Inc. WhatsApp is a trademark of WhatsApp LLC.
+
+Statusly is a fast, simple status saver for WhatsApp and WhatsApp Business. Browse the photo and video statuses your contacts post, then save them to your gallery in full HD, share them anywhere, or repost them to your own status in one tap.
+
+★ SAVE STATUS IN HD
+Download photo and video statuses in original quality, with no compression and no watermark.
+
+★ SAVE · SHARE · REPOST
+Every status has three one-tap actions. Repost any video status or picture to your own status in seconds.
+
+★ BUSINESS STATUS SUPPORT
+A dedicated tab for WhatsApp Business statuses.
+
+★ MULTI-SELECT
+Batch-save or batch-share many statuses at once.
+
+★ NEW STATUS ALERTS
+Get notified when new statuses are available to save.
+
+★ DIRECT CHAT
+Message any number without saving it to your contacts.
+
+★ QUOTES GALLERY
+Ready-made quote cards to share or post as your status.
+
+★ PRIVATE BY DESIGN
+No account, no cloud, no uploads. Your photos and videos never leave your phone. Statusly only reads the status folder you choose to grant access to.
+
+HOW TO USE
+1. Open WhatsApp and view a status.
+2. Open Statusly. The status appears automatically.
+3. Tap Save, Share, or Repost.
+
+Statuses only appear in Statusly after you have viewed them in WhatsApp. Statusly cannot see statuses you have not opened.
+
+Free with ads. Remove ads with a one-time purchase.
+```
+
+**Graphics (present in `assets/`):** icon `assets/icon/icon_store_1024.png`, feature graphic `assets/marketing/00_feature_graphic_1024x500.png`, screenshots `assets/marketing/01…06_*.png`.
+
+**Listing rules:** no "WhatsApp" / "WA" in the title; no "Best", "#1", "Free", emojis or ALL CAPS in the title; "for WhatsApp" only descriptively in the long description; keep the non-affiliation disclaimer first (see `legal/PLAY-COMPLIANCE.md` §1).
+
+**ASO notes:**
+- Category: Tools (or Video Players & Editors — match where competitors rank).
+- Screenshots: add a short caption to each ("Save statuses in HD", "Repost in one tap"); the first 3 matter most.
+- Localize the listing for key status-saver markets (Hindi, Portuguese, Arabic, Indonesian, Spanish); review any machine translation.
+- Ratings and install velocity outweigh keywords — consider an in-app review prompt after ~3rd save (needs a code change).
+- Don't repeat keywords unnaturally — Play flags keyword stuffing as spam.
+
+### Previous listing draft (superseded, kept for reference)
+
 - **App name (30 chars):** `Statusly — Status Saver` (or `Statusly: Status Saver & Repost` if it fits)
 - **Short description (80 chars):**
   `Save WhatsApp statuses in HD — photos & videos. Save, share, repost in a tap.`
@@ -69,7 +128,6 @@ eas submit -p android --profile production      # uploads to the internal track 
   > • **Private by design** — everything stays on your device. No account, no cloud, your media never leaves your phone.
   >
   > Statusly is an independent app and is not affiliated with, endorsed by, or connected to WhatsApp LLC or Meta Platforms, Inc. "WhatsApp" is a trademark of WhatsApp LLC.
-- **Graphics (present in `assets/`):** icon `assets/icon/icon_store_1024.png`, feature graphic `assets/marketing/00_feature_graphic_1024x500.png`, screenshots `assets/marketing/01…06_*.png`.
 
 ## 4. Data Safety form  (must match the Privacy Policy exactly)
 
